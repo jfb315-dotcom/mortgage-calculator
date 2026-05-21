@@ -408,4 +408,24 @@
       document.getElementById("pitiOut").textContent = fmt(totalMo);
 
       document.getElementById("results").style.display = "block";
-      document.getElementById("saveShotBtn").style.display = "
+      document.getElementById("saveShotBtn").style.display = "block";
+    }
+
+    function saveScreenshot() {
+      const results = document.getElementById("results");
+
+      html2canvas(results, {
+        backgroundColor: null,
+        scale: 2
+      }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+
+        const newTab = window.open();
+        newTab.document.write('<img src="' + imgData + '" style="width:100%;height:auto;">');
+      });
+    }
+
+    toggleManualMI();
+  </script>
+</body>
+</html>
