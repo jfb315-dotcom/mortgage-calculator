@@ -90,27 +90,27 @@
     <h2>Loan Inputs</h2>
 
     <label>Purchase Price ($)</label>
-    <input id="price" type="text" placeholder="384,000.00" oninput="formatNumber(this)" />
+    <input id="price" type="text" inputmode="decimal" placeholder="384,000.00" oninput="formatNumber(this)" />
 
     <div class="row">
       <div>
         <label>Down Payment %</label>
-        <input id="downPct" type="number" placeholder="3.5" />
+        <input id="downPct" type="text" inputmode="decimal" placeholder="3.5" />
       </div>
       <div>
         <label>Interest Rate %</label>
-        <input id="rate" type="number" placeholder="6.38" />
+        <input id="rate" type="text" inputmode="decimal" placeholder="6.38" />
       </div>
     </div>
 
     <div class="row">
       <div>
         <label>Loan Term (Years)</label>
-        <input id="term" type="number" placeholder="30" />
+        <input id="term" type="text" inputmode="numeric" placeholder="30" />
       </div>
       <div>
         <label>Credit Score</label>
-        <input id="credit" type="number" placeholder="780" />
+        <input id="credit" type="text" inputmode="numeric" placeholder="780" />
       </div>
     </div>
 
@@ -125,7 +125,7 @@
     <!-- Manual MI for Conventional -->
     <div id="manualMiBlock" style="display:none;">
       <label>Manual MI % (Annual)</label>
-      <input id="manualMi" type="number" placeholder="0.62" />
+      <input id="manualMi" type="text" inputmode="decimal" placeholder="0.62" />
     </div>
 
     <h2>Property Costs</h2>
@@ -133,11 +133,11 @@
     <div class="row">
       <div>
         <label>Annual Property Taxes ($)</label>
-        <input id="taxes" type="text" placeholder="0.00" oninput="formatNumber(this)" />
+        <input id="taxes" type="text" inputmode="decimal" placeholder="0.00" oninput="formatNumber(this)" />
       </div>
       <div>
         <label>Annual Homeowners Insurance ($)</label>
-        <input id="ins" type="text" placeholder="0.00" oninput="formatNumber(this)" />
+        <input id="ins" type="text" inputmode="decimal" placeholder="0.00" oninput="formatNumber(this)" />
       </div>
     </div>
 
