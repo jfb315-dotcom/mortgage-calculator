@@ -107,7 +107,7 @@
 <body>
   <div class="app">
     <h1>HMS Mortgage Calculator</h1>
-    <div class="subtitle">Mobile Quick Calc â€¢ Estimates only</div>
+    <div class="subtitle">Mobile Quick Calc • Estimates only</div>
 
     <div class="toggle-row">
       <div id="btnPurchase" class="toggle-btn active" onclick="setMode('purchase')">Purchase</div>
@@ -189,7 +189,6 @@
       <div class="line"><span>Total Loan Amount</span><span id="loanAmtOut"></span></div>
 
       <hr style="border:0;border-top:1px solid var(--border);margin:8px 0;">
-
       <div class="line"><span>P&I Payment</span><span id="piOut"></span></div>
       <div class="line"><span>Monthly MI</span><span id="miOut"></span></div>
       <div class="line"><span>Monthly Taxes</span><span id="taxMoOut"></span></div>
@@ -198,11 +197,6 @@
       <hr style="border:0;border-top:1px solid var(--border);margin:8px 0;">
 
       <div class="line big"><span>Total Monthly Payment</span><span id="pitiOut"></span></div>
-
-      <div style="text-align:center; margin-top:18px;">
-        <img src="email_logo.png" style="width:160px; opacity:0.95;">
-      </div>
-
     </div>
 
     <button id="saveShotBtn" style="display:none; margin-top:12px;" onclick="saveScreenshot()">
@@ -416,4 +410,12 @@
         scale: 2
       }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
-        const new
+        const newTab = window.open();
+        newTab.document.write('<img src="' + imgData + '" style="width:100%;height:auto;">');
+      });
+    }
+  </script>
+
+</body>
+</html>
+
