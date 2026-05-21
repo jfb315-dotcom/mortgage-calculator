@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mortgage Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #111111;
+      color: #ffffff;
+    }
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+    h2 {
+      font-size: 1.1rem;
+      margin-top: 24px;
+      margin-bottom: 8px;
+      color: #ff8200;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #1b1b1b;
+      color: #ffffff;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+    }
+    input:focus {
+      outline: 1px solid #ff8200;
+      border-color: #ff8200;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    .row > div {
+      flex: 1;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 999px;
+      border: none;
+      background: #ff8200;
+      color: #111111;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:active {
+      transform: translateY(1px);
+      opacity: 0.9;
+    }
+    .card {
+      margin-top: 20px;
+      padding: 14px 12px;
+      border-radius: 12px;
+      background: #181818;
+      border: 1px solid #2a2a2a;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: #ff8200;
+    }
+    .line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin: 2px 0;
+    }
+    .big {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .muted {
+      font-size: 0.8rem;
+      color: #aaaaaa;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Home Mortgage Solutions</h1>
+    <div class="muted">Quick Mortgage Calculator • Ask for John or Darrell</div>
+
+    <h2>Inputs</h2>
+    <label>Purchase Price ($)</label>
+    <input id="price" type="number" inputmode="decimal" placeholder="300000" />
+
+    <div class="row">
+      <div>
+        <label>Down %</label>
+        <input id="downPct" type="number" inputmode="decimal" placeholder="20" />
+      </div>
+      <div>
+        <label>Rate %</label>
+        <input id="rate" type="number" inputmode="decimal" placeholder="6.75" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Term (years)</label>
+        <input id="term" type="number" inputmode="decimal" placeholder="30" />
+      </div>
+      <div>
+        <label>HOA ($/mo)</label>
+        <input id="hoa" type="number" inputmode="decimal" placeholder="0" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Taxes ($/yr)</label>
+        <input id="taxes" type="number" inputmode="decimal" placeholder="3600" />
+      </div>
+      <div>
+        <label>Insurance ($/yr)</label>
+        <input id="ins" type="number" inputmode="decimal" placeholder="1200" />
+      </div>
+    </div>
+
+    <button onclick="calc()">Calculate Payment</button>
+
+    <div class="card" id="results" style="display:none;">
+      <h3>Results</h3>
+      <div class="line">
+        <span>Loan Amount</span>
+        <span id="loanAmt"></span>
+      </div>
+      <div class="line">
+        <span>Principal &amp; Interest (PI)</span>
+        <span id="pi"></span>
+      </div>
+      <div class="line">
+        <span>Mortgage Insurance (MI)</span>
+        <span id="mi"></span>
+      </div>
+      <div class="line">
+        <span>Taxes (mo)</span>
+        <span id="taxMo"></span>
+      </div>
+      <div class="line">
+        <span>Insurance (mo)</span>
+        <span id="insMo"></span>
+      </div>
+      <div class="line">
+        <span>HOA</span>
+        <span id="hoaOut"></span>
+      </div>
+      <hr style="border:0;border-top:1px solid #333;margin:8px 0;">
+      <div class="line big">
+        <span>Total PITI</span>
+        <span id="piti"></span>
+      </div>
+      <div class="muted">Estimates only. For a full quote, call John or Darrell.</div>
+    </div>
+  </div>
+
+  <script>
+    function fmt(n) {
+      if (isNaN(n)) return "$0";
+      return "$" + n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function calc() {
+      const price = parseFloat(document.getElementById("price").value) || 0;
+      const downPct = (parseFloat(document.getElementById("downPct").value) || 0) / 100;
+      const rate = (parseFloat(document.getElementById("rate").value) || 0) / 100;
+      const termYears = parseFloat(document.getElementById("term").value) || 30;
+      const hoa = parseFloat(document.getElementById("hoa").value) || 0;
+      const taxesYr = parseFloat(document.getElementById("taxes").value) || 0;
+      const insYr = parseFloat(document.getElementById("ins").value) || 0;
+
+      const loanAmt = price * (1 - downPct);
+      const n = termYears * 12;
+      const r = rate / 12;
+      const pi = r === 0 ? (loanAmt / n) : (loanAmt * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+
+      // Simple MI assumption: 0.5% annual on loan amount (you can tweak)
+      const miMo = (loanAmt * 0.005) / 12;
+
+      const taxMo = taxesYr / 12;
+      const insMo = insYr / 12;
+
+      const piti = pi + miMo + taxMo + insMo + hoa;
+
+      document.getElementById("loanAmt").textContent = fmt(loanAmt);
+      document.getElementById("pi").textContent = fmt(pi);
+      document.getElementById("mi").textContent = fmt(miMo);
+      document.getElementById("taxMo").textContent = fmt(taxMo);
+      document.getElementById("insMo").textContent = fmt(insMo);
+      document.getElementById("hoaOut").textContent = fmt(hoa);
+      document.getElementById("piti").textContent = fmt(piti);
+
+      document.getElementById("results").style.display = "block";
+    }
+  </script>
+</body>
+</html>
