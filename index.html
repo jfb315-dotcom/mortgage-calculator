@@ -199,7 +199,6 @@
 
       <div class="line big"><span>Total Monthly Payment</span><span id="pitiOut"></span></div>
 
-      <!-- LOGO -->
       <div style="text-align:center; margin-top:18px;">
         <img src="email_logo.png" style="width:160px; opacity:0.95;">
       </div>
@@ -417,13 +416,4 @@
         scale: 2
       }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
-        const newTab = window.open();
-        newTab.document.write('<img src="' + imgData + '" style="width:100%;height:auto;">');
-      });
-    }
-    // Close the calc() function above
-  </script>
-
-</body>
-</html>
-
+        const new
