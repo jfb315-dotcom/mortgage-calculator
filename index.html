@@ -106,8 +106,8 @@
 
 <body>
   <div class="app">
-    <h1>HMS Mortgage</h1>
-    <div class="subtitle">Mobile Quick Calc � Estimates only</div>
+    <h1>HMS Mortgage Calculator</h1>
+    <div class="subtitle">Mobile Quick Calc • Estimates only</div>
 
     <!-- PURCHASE / REFINANCE TOGGLE -->
     <div class="toggle-row">
@@ -168,15 +168,15 @@
       <input id="manualMi" type="text" inputmode="decimal" placeholder="0.62" />
     </div>
 
-    <h2>Property Costs</h2>
+    <h2>Annual Property Costs</h2>
 
     <div class="row">
       <div>
-        <label>Annual Property Taxes ($)</label>
+        <label>Property Taxes ($)</label>
         <input id="taxes" type="text" inputmode="decimal" value="1,200" oninput="formatNumber(this)" />
       </div>
       <div>
-        <label>Annual Homeowners Insurance ($)</label>
+        <label>Homeowners Insurance ($)</label>
         <input id="ins" type="text" inputmode="decimal" value="1,200" oninput="formatNumber(this)" />
       </div>
     </div>
@@ -204,6 +204,12 @@
       <hr style="border:0;border-top:1px solid var(--border);margin:8px 0;">
 
       <div class="line big"><span>Total Monthly Payment</span><span id="pitiOut"></span></div>
+
+      <!-- ⭐ LOGO ADDED HERE ⭐ -->
+      <div style="text-align:center; margin-top:18px;">
+        <img src="logo.png" style="width:160px; opacity:0.95;">
+      </div>
+
     </div>
 
     <!-- Screenshot button -->
@@ -212,7 +218,7 @@
     </button>
   </div>
 
-  <!-- html2canvas for screenshot -->
+  <!-- html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
@@ -407,25 +413,4 @@
       document.getElementById("insMoOut").textContent = fmt(insMo);
       document.getElementById("pitiOut").textContent = fmt(totalMo);
 
-      document.getElementById("results").style.display = "block";
-      document.getElementById("saveShotBtn").style.display = "block";
-    }
-
-    function saveScreenshot() {
-      const results = document.getElementById("results");
-
-      html2canvas(results, {
-        backgroundColor: null,
-        scale: 2
-      }).then(canvas => {
-        const imgData = canvas.toDataURL("image/png");
-
-        const newTab = window.open();
-        newTab.document.write('<img src="' + imgData + '" style="width:100%;height:auto;">');
-      });
-    }
-
-    toggleManualMI();
-  </script>
-</body>
-</html>
+      document.getElementById("results").style.display = "
