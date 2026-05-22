@@ -189,7 +189,6 @@
       <div class="line"><span>Total Loan Amount</span><span id="loanAmtOut"></span></div>
 
       <hr style="border:0;border-top:1px solid var(--border);margin:8px 0;">
-
       <div class="line"><span>P&I Payment</span><span id="piOut"></span></div>
       <div class="line"><span>Monthly MI</span><span id="miOut"></span></div>
       <div class="line"><span>Monthly Taxes</span><span id="taxMoOut"></span></div>
@@ -395,4 +394,28 @@
 
       document.getElementById("piOut").textContent = fmt(pi);
       document.getElementById("miOut").textContent = fmt(miMo);
-      document.getElementById
+      document.getElementById("taxMoOut").textContent = fmt(taxMo);
+      document.getElementById("insMoOut").textContent = fmt(insMo);
+      document.getElementById("pitiOut").textContent = fmt(totalMo);
+
+      document.getElementById("results").style.display = "block";
+      document.getElementById("saveShotBtn").style.display = "block";
+    }
+
+    function saveScreenshot() {
+      const results = document.getElementById("results");
+
+      html2canvas(results, {
+        backgroundColor: null,
+        scale: 2
+      }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const newTab = window.open();
+        newTab.document.write('<img src="' + imgData + '" style="width:100%;height:auto;">');
+      });
+    }
+  </script>
+
+</body>
+</html>
+
