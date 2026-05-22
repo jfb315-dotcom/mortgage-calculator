@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -208,13 +209,12 @@
       <div class="line big"><span>Total Monthly Payment</span><span id="pitiOut"></span></div>
     </div>
 
-   <button id="saveShotBtn" style="display:none; margin-top:12px;" onclick="saveScreenshot()">
-  Copy Screenshot
-</button>
-</div>
+    <button id="saveShotBtn" style="display:none; margin-top:12px;" onclick="saveScreenshot()">
+      Save Screenshot
+    </button>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
     let mode = "purchase";
@@ -416,9 +416,9 @@ if (mode === "refi") {
       document.getElementById("insMoOut").textContent = fmt(insMo);
       document.getElementById("pitiOut").textContent = fmt(totalMo);
 
-document.getElementById("results").style.display = "block";
-document.getElementById("saveShotBtn").style.display = "block";
-}
+      document.getElementById("results").style.display = "block";
+      document.getElementById("saveShotBtn").style.display = "block";
+    }
 
 async function saveScreenshot() {
   const results = document.getElementById("results");
@@ -428,69 +428,34 @@ async function saveScreenshot() {
     backgroundColor: "#111217"
   });
 
-  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-  const item = new ClipboardItem({ "image/png": blob });
+  canvas.toBlob(async (blob) => {
+    const file = new File([blob], "mortgage-results.png", {
+      type: "image/png"
+    });
 
-  try {
-    await navigator.clipboard.write([item]);
-    showCustomAlert("Screenshot copied. Paste into Messages or Email.");
-    return;
-  } catch (err) {
-    console.log(err);
-  }
-
-  const url = URL.createObjectURL(blob);
-  const newTab = window.open();
-  newTab.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Mortgage Calculator Results",
+          text: "Here are the payment results from John Bischof at Home Mortgage Solutions, 423-505-9811:",
+          files: [file]
+        });
+      } catch (err) {
+        console.log("Share canceled", err);
+      }
+    } else {
+      // fallback if share isn't supported
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "mortgage-results.png";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+  });
 }
 
-function showCustomAlert(msg) {
-  const overlay = document.createElement("div");
-  overlay.style.position = "fixed";
-  overlay.style.top = "0";
-  overlay.style.left = "0";
-  overlay.style.width = "100%";
-  overlay.style.height = "100%";
-  overlay.style.background = "rgba(0,0,0,0.6)";
-  overlay.style.display = "flex";
-  overlay.style.alignItems = "center";
-  overlay.style.justifyContent = "center";
-  overlay.style.zIndex = "9999";
-
-  const box = document.createElement("div");
-  box.style.background = "#111217";
-  box.style.color = "#FF8200";
-  box.style.fontWeight = "bold";
-  box.style.fontSize = "18px";
-  box.style.padding = "24px 30px";
-  box.style.borderRadius = "12px";
-  box.style.boxShadow = "0 0 25px rgba(0,0,0,0.7)";
-  box.style.textAlign = "center";
-  box.style.maxWidth = "80%";
-
-  const text = document.createElement("div");
-  text.textContent = msg;
-
-  const btn = document.createElement("div");
-  btn.textContent = "OK";
-  btn.style.marginTop = "20px";
-  btn.style.padding = "10px 24px";
-  btn.style.background = "#FF8200";
-  btn.style.color = "#fff";
-  btn.style.borderRadius = "8px";
-  btn.style.cursor = "pointer";
-  btn.style.display = "inline-block";
-  btn.onclick = () => overlay.remove();
-
-  box.appendChild(text);
-  box.appendChild(btn);
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-}
-
-</script>
+  </script>
 
 </body>
 </html>
-
-
