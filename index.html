@@ -415,7 +415,7 @@ if (mode === "refi") {
       document.getElementById("insMoOut").textContent = fmt(insMo);
       document.getElementById("pitiOut").textContent = fmt(totalMo);
 
-     document.getElementById("results").style.display = "block";
+document.getElementById("results").style.display = "block";
 document.getElementById("saveShotBtn").style.display = "block";
 }
 
@@ -430,26 +430,30 @@ async function saveScreenshot() {
   const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
   const file = new File([blob], "mortgage-results.png", { type: "image/png" });
 
-  // ⭐ iPhone + Android share sheet support check
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+  const canShareFiles =
+    navigator.canShare &&
+    navigator.canShare({ files: [file] });
+
+  if (canShareFiles) {
     try {
       await navigator.share({
         title: "Mortgage Calculator Results",
         text: "Here are the payment results from John Bischof at Home Mortgage Solutions, 423-505-9811:",
         files: [file]
       });
+      return;
     } catch (err) {
-      console.log("Share canceled", err);
+      console.log(err);
     }
-  } else {
-    // ⭐ fallback to your old behavior (open image in new tab)
-    const url = URL.createObjectURL(blob);
-    const newTab = window.open();
-    newTab.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
   }
+
+  const url = URL.createObjectURL(blob);
+  const newTab = window.open();
+  newTab.document.write('<img src="' + url + '" style="width:100%;height:auto;">');
 }
 
 </script>
 
 </body>
 </html>
+
