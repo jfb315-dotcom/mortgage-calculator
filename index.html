@@ -183,6 +183,11 @@
 <div class="card" id="results" style="display:none;">
   <img src="email-logo.png" style="width:140px; display:block; margin:0 auto 10px;" />
   <h3>Payment Breakdown</h3>
+  
+<div class="line">
+  <span id="valueLabel"></span>
+  <span id="valueOut"></span>
+</div>
 
 
       <div class="line"><span>Loan Type</span><span id="loanTypeOut"></span></div>
@@ -349,22 +354,30 @@
       let homeValue = 0;
       let ufmipAmt = 0;
 
-      if (mode === "purchase") {
-        const price = parseNum(document.getElementById("price").value);
-        const downPct = (+document.getElementById("downPct").value || 0) / 100;
-        const downAmt = price * downPct;
-        baseLoan = price - downAmt;
-        ufmipAmt = baseLoan * getUFMIP(loanType);
-        loanAmt = baseLoan + ufmipAmt;
-        homeValue = price;
-      }
+if (mode === "purchase") {
+  const price = parseNum(document.getElementById("price").value);
+  const downPct = (+document.getElementById("downPct").value || 0) / 100;
+  const downAmt = price * downPct;
+  baseLoan = price - downAmt;
+  ufmipAmt = baseLoan * getUFMIP(loanType);
+  loanAmt = baseLoan + ufmipAmt;
+  homeValue = price;
 
-      if (mode === "refi") {
-        homeValue = parseNum(document.getElementById("homeValue").value);
-        baseLoan = parseIntNum(document.getElementById("refiLoanAmt").value);
-        ufmipAmt = baseLoan * getUFMIP(loanType);
-        loanAmt = baseLoan + ufmipAmt;
-      }
+  document.getElementById("valueLabel").textContent = "Purchase Price";
+  document.getElementById("valueOut").textContent = fmt(price);
+}
+
+if (mode === "refi") {
+  homeValue = parseNum(document.getElementById("homeValue").value);
+  baseLoan = parseIntNum(document.getElementById("refiLoanAmt").value);
+  ufmipAmt = baseLoan * getUFMIP(loanType);
+  loanAmt = baseLoan + ufmipAmt;
+
+  document.getElementById("valueLabel").textContent = "Home Value (Estimated)";
+  document.getElementById("valueOut").textContent = fmt(homeValue);
+}
+
+
 
       let ltv;
       if (/FHA|VA/i.test(loanType)) {
