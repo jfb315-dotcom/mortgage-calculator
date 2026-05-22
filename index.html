@@ -428,19 +428,14 @@ async function saveScreenshot() {
   });
 
   const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-  const file = new File([blob], "mortgage-results.png", { type: "image/png" });
+  const item = new ClipboardItem({ "image/png": blob });
 
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: "Mortgage Calculator Results",
-        text: "Here are the payment results from John Bischof at Home Mortgage Solutions, 423-505-9811:",
-        files: navigator.canShare && navigator.canShare({ files: [file] }) ? [file] : undefined
-      });
-      return;
-    } catch (err) {
-      console.log(err);
-    }
+  try {
+    await navigator.clipboard.write([item]);
+    alert("Screenshot copied. You can paste it into Messages or Email.");
+    return;
+  } catch (err) {
+    console.log(err);
   }
 
   const url = URL.createObjectURL(blob);
@@ -452,4 +447,3 @@ async function saveScreenshot() {
 
 </body>
 </html>
-
