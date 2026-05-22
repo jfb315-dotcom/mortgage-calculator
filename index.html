@@ -419,18 +419,41 @@ if (mode === "refi") {
       document.getElementById("saveShotBtn").style.display = "block";
     }
 
-    function saveScreenshot() {
-      const results = document.getElementById("results");
+async function saveScreenshot() {
+  const results = document.getElementById("results");
 
-      html2canvas(results, {
-        backgroundColor: null,
-        scale: 2
-      }).then(canvas => {
-        const imgData = canvas.toDataURL("image/png");
-        const newTab = window.open();
-        newTab.document.write('<img src="' + imgData + '" style="width:100%;height:auto;">');
-      });
+  const canvas = await html2canvas(results, {
+    scale: 2,
+    backgroundColor: "#111217"
+  });
+
+  canvas.toBlob(async (blob) => {
+    const file = new File([blob], "mortgage-results.png", {
+      type: "image/png"
+    });
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Mortgage Calculator Results",
+          text: "Here are the payment results from John Bischof at Home Mortgage Solutions, 423-505-9811:",
+          files: [file]
+        });
+      } catch (err) {
+        console.log("Share canceled", err);
+      }
+    } else {
+      // fallback if share isn't supported
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "mortgage-results.png";
+      link.click();
+      URL.revokeObjectURL(url);
     }
+  });
+}
+
   </script>
 
 </body>
