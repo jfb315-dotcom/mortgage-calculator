@@ -248,11 +248,9 @@
       <div class="line big"><span>Total Monthly Payment</span><span id="pitiOut"></span></div>
     </div>
 
-<button id="saveShotBtn" style="display:none; margin-top:12px;" onclick="saveScreenshot()">
-  Share Results
-</button>
-
-
+    <button id="saveShotBtn" style="display:none; margin-top:12px;" onclick="saveScreenshot()">
+      Share Results
+    </button>
   </div>
 
   <!-- ⭐ Centered Rounded Popup Card -->
@@ -548,13 +546,9 @@ function calc() {
   document.getElementById("insMoOut").textContent = fmt(insMo);
   document.getElementById("pitiOut").textContent = fmt(totalMo);
 
-document.getElementById("results").style.display = "block";
-document.getElementById("saveShotBtn").style.display = "block";
+  document.getElementById("results").style.display = "block";
+  document.getElementById("saveShotBtn").style.display = "block";
 }
-
-
-
-
 </script>
 <script>
 /* ---------------------------------------------------------
@@ -607,4 +601,5 @@ async function saveScreenshot() {
 
 </body>
 </html>
+
 
