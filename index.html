@@ -248,9 +248,10 @@
       <div class="line big"><span>Total Monthly Payment</span><span id="pitiOut"></span></div>
     </div>
 
-<button id="saveShotBtn" style="display:none; margin-top:12px; margin-bottom:40px;" onclick="saveScreenshot()">
+<button id="saveShotBtn" style="display:none; margin-top:12px;" onclick="saveScreenshot()">
   Share Results
 </button>
+
 
   </div>
 
@@ -549,12 +550,8 @@ function calc() {
 
 document.getElementById("results").style.display = "block";
 document.getElementById("saveShotBtn").style.display = "block";
-
-document.getElementById("saveShotBtn").scrollIntoView({
-  behavior: "smooth",
-  block: "center"
-});
 }
+
 
 </script>
 <script>
