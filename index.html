@@ -17,7 +17,6 @@
 
     * { box-sizing: border-box; }
 
-    /* 🔥 Pulsing Glow Animation for Instruction Pill */
     @keyframes pulseGlow {
       0% {
         box-shadow:
@@ -35,7 +34,6 @@
           0 0 28px rgba(255,130,0,0.45);
       }
     }
-
 
     body {
       margin: 0;
@@ -131,18 +129,11 @@
     .big { font-size: 1.25rem; font-weight: 700; }
     .muted { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
 
-    /* ⭐ Fade‑in animation for popup card */
     @keyframes fadeInPopup {
-      from {
-        opacity: 0;
-        transform: scale(0.92);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
     }
-  </style>
+</style>
 </head>
 
 <body>
@@ -153,31 +144,41 @@
     <div class="subtitle">Mobile Quick Calc • Estimates only</div>
 
     <div class="toggle-row">
-      <div id="btnPurchase" class="toggle-btn active" onclick="setMode('purchase')">Purchase</div>
-      <div id="btnRefi" class="toggle-btn" onclick="setMode('refi')">Refinance</div>
+      <div id="btnPurchase" class="toggle-btn active" onclick="setMode('purchase'); calc()">Purchase</div>
+      <div id="btnRefi" class="toggle-btn" onclick="setMode('refi'); calc()">Refinance</div>
     </div>
 
     <div id="purchaseInputs">
       <h2>Purchase Inputs</h2>
 
       <label>Purchase Price ($)</label>
-      <input id="price" type="text" inputmode="decimal" value="350,000" oninput="formatNumber(this)" />
+      <input id="price" type="text" inputmode="decimal"
+             value="350,000"
+             oninput="formatNumber(this); calc()" />
 
       <label>Down Payment %</label>
-      <input id="downPct" type="text" inputmode="decimal" value="3.5" />
+      <input id="downPct" type="text" inputmode="decimal"
+             value="3.5"
+             oninput="calc()" />
     </div>
 
     <div id="refiInputs" style="display:none;">
       <h2>Refinance Inputs</h2>
 
       <label>Home Value ($)</label>
-      <input id="homeValue" type="text" inputmode="decimal" value="400,000" oninput="onHomeValueChange()" />
+      <input id="homeValue" type="text" inputmode="decimal"
+             value="400,000"
+             oninput="onHomeValueChange(); calc()" />
 
       <label>Loan Amount ($)</label>
-      <input id="refiLoanAmt" type="text" inputmode="numeric" value="320,000" oninput="onRefiLoanChange()" />
+      <input id="refiLoanAmt" type="text" inputmode="numeric"
+             value="320,000"
+             oninput="onRefiLoanChange(); calc()" />
 
       <label>LTV %</label>
-      <input id="refiLtv" type="text" inputmode="decimal" value="80" oninput="onRefiLtvChange()" />
+      <input id="refiLtv" type="text" inputmode="decimal"
+             value="80"
+             oninput="onRefiLtvChange(); calc()" />
     </div>
 
     <h2>Loan Details</h2>
@@ -185,16 +186,20 @@
     <div class="row">
       <div>
         <label>Interest Rate %</label>
-        <input id="rate" type="text" inputmode="decimal" value="6.25" />
+        <input id="rate" type="text" inputmode="decimal"
+               value="6.25"
+               oninput="calc()" />
       </div>
       <div>
         <label>Loan Term (Years)</label>
-        <input id="term" type="text" inputmode="numeric" value="30" />
+        <input id="term" type="text" inputmode="numeric"
+               value="30"
+               oninput="calc()" />
       </div>
     </div>
 
     <label>Loan Type</label>
-    <select id="loanType" onchange="toggleManualMI()">
+    <select id="loanType" onchange="toggleManualMI(); calc()">
       <option value="FHA">FHA</option>
       <option value="USDA">USDA</option>
       <option value="VA">VA</option>
@@ -203,7 +208,9 @@
 
     <div id="manualMiBlock" style="display:none;">
       <label>Manual MI % (Annual)</label>
-      <input id="manualMi" type="text" inputmode="decimal" placeholder="0.62" />
+      <input id="manualMi" type="text" inputmode="decimal"
+             placeholder="0.62"
+             oninput="calc()" />
     </div>
 
     <h2>Annual Property Costs</h2>
@@ -211,16 +218,21 @@
     <div class="row">
       <div>
         <label>Property Taxes ($)</label>
-        <input id="taxes" type="text" inputmode="decimal" value="1,200" oninput="formatNumber(this)" />
+        <input id="taxes" type="text" inputmode="decimal"
+               value="1,200"
+               oninput="formatNumber(this); calc()" />
       </div>
       <div>
         <label>Home Insurance ($)</label>
-        <input id="ins" type="text" inputmode="decimal" value="1,200" oninput="formatNumber(this)" />
+        <input id="ins" type="text" inputmode="decimal"
+               value="1,200"
+               oninput="formatNumber(this); calc()" />
       </div>
     </div>
 
-    <button onclick="calc()">Calculate Payment</button>
-
+    <!-- ⭐ NEW BUTTON -->
+    <button onclick="scrollToResults()">See Results</button>
+    <!-- ⭐ PAYMENT BREAKDOWN CARD -->
     <div class="card" id="results" style="display:none;">
       <img src="email-logo.png" style="width:140px; display:block; margin:0 auto 10px;" />
       <h3>Payment Breakdown</h3>
@@ -245,15 +257,19 @@
 
       <hr style="border:0;border-top:1px solid var(--border);margin:8px 0;">
 
-      <div class="line big"><span>Total Monthly Payment</span><span id="pitiOut"></span></div>
+      <div class="line big">
+        <span>Total Monthly Payment</span>
+        <span id="pitiOut"></span>
+      </div>
     </div>
 
+    <!-- ⭐ SHARE RESULTS BUTTON -->
     <button id="saveShotBtn" style="display:none; margin-top:12px;" onclick="saveScreenshot()">
       Share Results
     </button>
   </div>
 
-  <!-- ⭐ Centered Rounded Popup Card -->
+  <!-- ⭐ SCREENSHOT PREVIEW POPUP -->
   <div id="previewOverlay" style="
     position: fixed;
     inset: 0;
@@ -275,22 +291,20 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.45);
     ">
       <div id="pressMessage" style="
-  background: rgba(255,130,0,0.28);
-  color: var(--accent);
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 16px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  /* Glow + Pulse Animation */
-  animation: pulseGlow 1.8s ease-in-out infinite;
-">
+        background: rgba(255,130,0,0.28);
+        color: var(--accent);
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        animation: pulseGlow 1.8s ease-in-out infinite;
+      ">
         Long‑press the image to copy or share your results.
       </div>
 
@@ -301,9 +315,9 @@
       " />
     </div>
   </div>
-<!-- HTML2Canvas -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+  <!-- HTML2Canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
 /* ---------------------------------------------------------
    MODE SWITCHING (Purchase / Refi)
@@ -466,7 +480,7 @@ function onRefiLtvChange() {
 }
 
 /* ---------------------------------------------------------
-   MAIN CALCULATION
+   MAIN CALCULATION (AUTO‑CALC)
 --------------------------------------------------------- */
 function calc() {
   const rateAnnual = (+document.getElementById("rate").value || 0) / 100;
@@ -549,15 +563,23 @@ function calc() {
   document.getElementById("results").style.display = "block";
   document.getElementById("saveShotBtn").style.display = "block";
 }
-</script>
-<script>
+
+/* ---------------------------------------------------------
+   SCROLL TO RESULTS
+--------------------------------------------------------- */
+function scrollToResults() {
+  document.getElementById("results").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
 /* ---------------------------------------------------------
    SCREENSHOT → POPUP CARD → LONG‑PRESS SHARE
 --------------------------------------------------------- */
 async function saveScreenshot() {
   const results = document.getElementById("results");
 
-  // Capture screenshot of the results card
   const canvas = await html2canvas(results, {
     scale: 2,
     backgroundColor: "#111217"
@@ -565,33 +587,24 @@ async function saveScreenshot() {
 
   const dataUrl = canvas.toDataURL("image/png");
 
-  // Elements
   const overlay = document.getElementById("previewOverlay");
   const fullImg = document.getElementById("previewImage");
   const msg = document.getElementById("pressMessage");
 
-  // Set screenshot
   fullImg.src = dataUrl;
-
-  // Show message
   msg.style.display = "block";
 
-  // Show popup with fade‑in animation
   overlay.style.display = "flex";
   overlay.style.animation = "fadeInPopup 0.25s ease-out";
 
-  // Tap outside → close popup
   overlay.onclick = (e) => {
     if (e.target === overlay) {
       overlay.style.display = "none";
     }
   };
 
-  // AUTO‑HIDE message + AUTO‑CLOSE popup after long‑press
   fullImg.addEventListener("touchend", () => {
-    msg.style.display = "none"; // hide message
-
-    // Close popup right after iOS/Android share menu appears
+    msg.style.display = "none";
     setTimeout(() => {
       overlay.style.display = "none";
     }, 150);
@@ -601,5 +614,4 @@ async function saveScreenshot() {
 
 </body>
 </html>
-
 
